@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Métodos Numéricos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Métodos Numéricos</a>
+            <div class="nav-links">
+                <a href="/euler">Euler Mejorado</a>
+                <a href="/runge_kutta">Runge-Kutta</a>
+                <a href="/newton">Newton-Raphson</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="card">
+            <h1 class="title">Métodos Numéricos para Cálculo</h1>
+            <p class="description">
+                Seleccione uno de los métodos disponibles para resolver problemas matemáticos.
+                Esta aplicación proporciona herramientas para resolver ecuaciones diferenciales
+                ordinarias y encontrar raíces de ecuaciones.
+            </p>
+            
+            <div class="buttons-grid">
+                <div class="method-card" onclick="location.href='/euler'">
+                    <h2>Euler Mejorado</h2>
+                    <p>Método para resolver ecuaciones diferenciales ordinarias. Ofrece mejor precisión que el método estándar de Euler.</p>
+                    <button class="btn-primary">Ir al método</button>
+                </div>
+                
+                <div class="method-card" onclick="location.href='/runge_kutta'">
+                    <h2>Runge-Kutta 4to Orden</h2>
+                    <p>Método para resolver ecuaciones diferenciales con alta precisión, comparable a la aproximación de Taylor de cuarto orden.</p>
+                    <button class="btn-primary">Ir al método</button>
+                </div>
+                
+                <div class="method-card" onclick="location.href='/newton'">
+                    <h2>Newton-Raphson</h2>
+                    <p>Método para encontrar aproximaciones a las raíces (o ceros) de una función real con convergencia rápida.</p>
+                    <button class="btn-primary">Ir al método</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

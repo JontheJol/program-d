@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Euler Mejorado</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Métodos Numéricos</a>
+            <div class="nav-links">
+                <a href="/euler" class="active">Euler Mejorado</a>
+                <a href="/runge_kutta">Runge-Kutta</a>
+                <a href="/newton">Newton-Raphson</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="card">
+            <h1 class="title">Método de Euler Mejorado</h1>
+            <p class="description">
+                El método de Euler mejorado (también conocido como método de Heun) es un método numérico para 
+                resolver ecuaciones diferenciales ordinarias (EDO) de primer orden.
+            </p>
+            
+            <form id="formEuler" class="input-form">
+                <div class="form-group">
+                    <label for="funcion">Función dy/dx = f(x, y):</label>
+                    <input type="text" id="funcion" name="funcion" placeholder="Ej: x + y" required>
+                    <small>Use la sintaxis de Python (x**2 para x², sin(x) para seno, etc.)</small>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="x0">x₀:</label>
+                        <input type="number" step="any" id="x0" name="x0" placeholder="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="y0">y₀:</label>
+                        <input type="number" step="any" id="y0" name="y0" placeholder="1" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="h">Paso (h):</label>
+                        <input type="number" step="any" id="h" name="h" placeholder="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="xn">xₙ (valor final):</label>
+                        <input type="number" step="any" id="xn" name="xn" placeholder="1" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary">Calcular</button>
+            </form>
+        </div>
+        
+        <div id="resultados" class="results-container"></div>
+    </div>
+    
+    <script>
+        document.getElementById('formEuler').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Show loading indicator
+            document.getElementById('resultados').innerHTML = '<div class="loading">Calculando...</div>';
+            
+            const formData = new FormData(e.target);
+            try {
+                const response = await fetch('/calcular_euler', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(Object.fromEntries(formData))
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Error en el cálculo');
+                }
+                
+                const resultados = await response.json();
+                
+                let html = '<div class="card results-card"><h2>Resultados</h2>';
+                html += `
+<div class="table-container">
+    <table class="results-table">
+        <thead>
+            <tr>
+                <th>Paso</th>
+                <th>x</th>
+                <th>y</th>
+                <th>k₁</th>
+                <th>y_pred</th>
+                <th>k₂</th>
+                <th>y_siguiente</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${resultados.map(paso => `
+                <tr>
+                    <td>${paso.paso}</td>
+                    <td>${paso.x}</td>
+                    <td>${paso.y}</td>
+                    <td>${paso.k1}</td>
+                    <td>${paso.y_pred}</td>
+                    <td>${paso.k2}</td>
+                    <td>${paso.y_siguiente}</td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>
+</div>
+`;
+                document.getElementById('resultados').innerHTML = html;
+            } catch (error) {
+                document.getElementById('resultados').innerHTML = 
+                    `<div class="error-message">Error: ${error.message}</div>`;
+            }
+        });
+    </script>
+</body>
+</html>

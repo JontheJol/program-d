@@ -1,0 +1,355 @@
+:root {
+    --primary-color: #3498db;
+    --primary-dark: #2980b9;
+    --secondary-color: #2ecc71;
+    --secondary-dark: #27ae60;
+    --text-color: #333;
+    --light-text: #666;
+    --lightest-text: #999;
+    --bg-color: #f5f5f5;
+    --card-bg: #fff;
+    --border-color: #e0e0e0;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    padding-bottom: 2rem;
+}
+/* derivada */
+.function-display {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.function-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.function-row:last-child {
+    margin-bottom: 0;
+}
+
+.function-expr {
+    margin-left: 1rem;
+    font-weight: 500;
+    font-family: 'Times New Roman', serif;
+}
+
+/* MathJax styling adjustments */
+.MathJax_Display {
+    margin: 0.5rem 0 !important;
+}
+/* Navbar */
+.navbar {
+    background-color: var(--primary-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 0.8rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: var(--transition);
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Main Container */
+.container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.title {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.description {
+    color: var(--light-text);
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+
+/* Form Styling */
+.input-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.form-row {
+    display: flex;
+    gap: 1.5rem;
+}
+
+label {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+input[type="text"],
+input[type="number"] {
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+small {
+    color: var(--lightest-text);
+    font-size: 0.8rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--transition);
+    align-self: flex-start;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+/* Results Styling */
+.results-container {
+    margin-top: 2rem;
+}
+
+.results-card {
+    margin-top: 2rem;
+}
+
+.results-card h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.table-container {
+    overflow-x: auto;
+    max-height: 500px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: center;
+}
+
+.results-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.results-table th,
+.results-table td {
+    padding: 0.8rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.results-table th {
+    background-color: rgba(52, 152, 219, 0.1);
+    font-weight: 500;
+    background-color: #f0f8ff;
+    border-bottom: 2px solid #3498db;
+    padding: 12px 8px;
+    font-weight: 600;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.results-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+.results-table tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.results-table tr:hover {
+    background-color: rgba(52, 152, 219, 0.05);
+}
+
+.results-table tr:hover td {
+    background-color: rgba(52, 152, 219, 0.05);
+}
+
+/* Loading and Error States */
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--light-text);
+}
+
+.error-message {
+    background-color: #ffecec;
+    color: #e74c3c;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+/* Success and warning messages */
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border-radius: 4px;
+    padding: 12px;
+    margin-top: 16px;
+}
+
+.warning-message {
+    background-color: #fff3cd;
+    color: #856404;
+    border-radius: 4px;
+    padding: 12px;
+    margin-top: 16px;
+}
+
+/* Buttons for Home Page */
+.buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.method-card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    text-align: center;
+    transition: var(--transition);
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.method-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+}
+
+.method-card h2 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.method-card p {
+    color: var(--light-text);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .nav-links {
+        gap: 0.5rem;
+    }
+    
+    .btn-primary {
+        width: 100%;
+    }
+
+    .table-container {
+        max-height: 400px;
+    }
+    
+    .results-table th,
+    .results-table td {
+        padding: 8px 4px;
+        font-size: 0.9rem;
+    }
+}

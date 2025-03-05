@@ -1,0 +1,61 @@
+# Entornos virtuales
+venv/
+env/
+ENV/
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Archivos de Flask
+instance/
+.webassets-cache
+.env
+
+# Archivos de PyInstaller
+*.manifest
+*.spec
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores/IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# Archivos de logs
+*.log
+logs/
+
+# Archivos temporales
+tmp/
+temp/
+
+# Entornos específicos de Jupyter Notebook
+.ipynb_checkpoints

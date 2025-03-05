@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Newton-Raphson</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Métodos Numéricos</a>
+            <div class="nav-links">
+                <a href="/euler">Euler Mejorado</a>
+                <a href="/runge_kutta">Runge-Kutta</a>
+                <a href="/newton" class="active">Newton-Raphson</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="card">
+            <h1 class="title">Método de Newton-Raphson</h1>
+            <p class="description">
+                El método de Newton-Raphson es un algoritmo iterativo potente para encontrar raíces de una función.
+                Se basa en aproximaciones sucesivas utilizando la derivada de la función para converger rápidamente a la solución.
+            </p>
+            
+            <form id="formNewton" class="input-form">
+                <div class="form-group">
+                    <label for="funcion">Función f(x):</label>
+                    <input type="text" id="funcion" name="funcion" placeholder="Ej: x**2 - 4" required>
+                    <small>Use la sintaxis de Python (x**2 para x², sin(x) para seno, etc.)</small>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="x0">Valor inicial (x₀):</label>
+                        <input type="number" step="any" id="x0" name="x0" placeholder="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tol">Tolerancia:</label>
+                        <input type="number" step="any" id="tol" name="tol" placeholder="0.0001" required>
+                    </div>
+                </div>
+                
+                <!-- Removed the max_iter input field -->
+                
+                <button type="submit" class="btn-primary">Calcular</button>
+            </form>
+        </div>
+        
+        <div id="function-info" class="results-container"></div>
+        <div id="resultados" class="results-container"></div>
+    </div>
+    
+    <script>
+        document.getElementById('formNewton').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Show loading indicator
+            document.getElementById('resultados').innerHTML = '<div class="loading">Calculando...</div>';
+            document.getElementById('function-info').innerHTML = '';
+            
+            const formData = new FormData(e.target);
+            const formObject = Object.fromEntries(formData);
+            
+            // Add a default value for max_iter
+            formObject.max_iter = 100; // Set default max iterations to 100
+            
+            try {
+                // First, get the derivative information
+                const derivResponse = await fetch('/get_derivative', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ funcion: formObject.funcion })
+                });
+                
+                if (!derivResponse.ok) {
+                    throw new Error('Error al calcular la derivada');
+                }
+                
+                const derivData = await derivResponse.json();
+                
+                // Display function and derivative
+                let infoHtml = '<div class="card results-card">';
+                infoHtml += '<h2>Función y su derivada</h2>';
+                infoHtml += '<div class="function-display">';
+                infoHtml += `<div class="function-row"><span>f(x) = </span><span class="function-expr">${derivData.original_latex}</span></div>`;
+                infoHtml += `<div class="function-row"><span>f'(x) = </span><span class="function-expr">${derivData.derivative_latex}</span></div>`;
+                infoHtml += '</div></div>';
+                document.getElementById('function-info').innerHTML = infoHtml;
+                
+                // Render LaTeX
+                if (window.MathJax) {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+                }
+                
+                // Now calculate the Newton-Raphson method
+                const response = await fetch('/calcular_newton', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formObject)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Error en el cálculo');
+                }
+                
+                const resultados = await response.json();
+                
+                let html = '<div class="card results-card"><h2>Resultados</h2>';
+                html += '<div class="table-container"><table class="results-table"><thead><tr>';
+                html += '<th>Iteración</th><th>x</th><th>f(x)</th><th>f\'(x)</th><th>x siguiente</th><th>Error</th>';
+                html += '</tr></thead><tbody>';
+                
+                resultados.forEach(iter => {
+                    html += `<tr>
+                        <td>${iter.iteracion}</td>
+                        <td>${iter.x}</td>
+                        <td>${iter['f(x)']}</td>
+                        <td>${iter["f'(x)"]}</td>
+                        <td>${iter.x_siguiente}</td>
+                        <td>${iter.error}</td>
+                    </tr>`;
+                });
+                
+                html += '</tbody></table></div>';
+                
+                // Add convergence message
+                const lastIter = resultados[resultados.length - 1];
+                if (lastIter.error < parseFloat(formObject.tol)) {
+                    html += `<div class="success-message">
+                        <p>El método ha convergido a la raíz x = ${lastIter.x_siguiente} con una tolerancia de ${lastIter.error}</p>
+                    </div>`;
+                } else {
+                    html += `<div class="warning-message">
+                        <p>El método ha alcanzado el máximo de iteraciones (100) sin converger.</p>
+                    </div>`;
+                }
+                
+                html += '</div>';
+                document.getElementById('resultados').innerHTML = html;
+                
+            } catch (error) {
+                document.getElementById('resultados').innerHTML = 
+                    `<div class="error-message">Error: ${error.message}</div>`;
+            }
+        });
+    </script>
+</body>
+</html>
