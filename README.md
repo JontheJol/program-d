@@ -20,17 +20,17 @@ pip freeze > requirements.txt
 
 1. Clona este repositorio:
 2. Crea un entorno virtual (recomendado):
-3. Activa el entorno virtual:
-- En Windows:
-  ```
-  venv\Scripts\activate
-  ```
-- En Linux/macOS:
-  ```
-  source venv/bin/activate
-  ```
+   2.5 Activa el entorno virtual:
+    - En Windows:
+      ```
+      venv\Scripts\activate
+      ```
+    - En Linux/macOS:
+      ```
+      source venv/bin/activate
+      ```
 
-4. Instala las dependencias:
+3. Instala las dependencias:
     pip install -r requirements.txt
 
 
@@ -64,7 +64,7 @@ pip freeze > requirements.txt
 5. Observa la función, su derivada y las iteraciones
 
 
-## Creación de un ejecutable
+## Creación de un ejecutable (opcinal,no funcioa siempre)
 
 Para crear un ejecutable independiente, puedes usar PyInstaller:
 
