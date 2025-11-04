@@ -59,3 +59,93 @@ temp/
 
 # Entornos específicos de Jupyter Notebook
 .ipynb_checkpoints
+
+# ===== ARCHIVOS CRÍTICOS DE SEGURIDAD =====
+# NUNCA subir estos archivos, ni siquiera en proyectos académicos
+
+# Variables de ambiente con datos sensibles
+.env
+.env.local
+.env.production
+.env.staging
+.env.test
+.env.development
+*.env
+
+# Claves y certificados
+*.key
+*.pem
+*.crt
+*.csr
+*.p12
+*.pfx
+id_rsa*
+*.ssh/
+
+# Configuraciones locales con credenciales
+config/database.yml
+config/secrets.yml
+config/credentials.yml.enc
+config/master.key
+
+# Archivos de Docker con secretos
+docker-compose.override.local.yml
+.docker/
+
+# ===== ARCHIVOS DE CI/CD Y DEPLOYMENT =====
+# Estos SÍ puedes subirlos en proyectos académicos, pero en producción real NO
+
+# Archivos de configuración de ambientes (COMENTADOS para proyecto académico)
+# config/.env.*
+# scripts/deploy-*.sh
+
+# ===== ARCHIVOS DE DESARROLLO Y TESTING =====
+
+# Reportes de cobertura
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Archivos de profiling
+.prof
+
+# Base de datos local
+*.db
+*.sqlite
+*.sqlite3
+database.db
+db.sqlite3
+
+# Archivos de cache de herramientas
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+
+# Archivos de configuración local del sistema
+.python-version
+.node-version
+.nvmrc
+
+# Archivos de backup
+*.backup
+*.bak
+*.orig
+*.tmp
+
+# ===== ARCHIVOS ESPECÍFICOS DEL PROYECTO =====
+
+# Entorno virtual específico de tu proyecto
+myenv/
+
+# Archivos generados por PyInstaller
+build/
+*.spec
+
+# Backups locales (no subir)
+config/backup/
+*.backup/

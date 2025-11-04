@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # Aplicación para testing
+  app-test:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5000"
+    environment:
+      - FLASK_ENV=testing
+      - FLASK_DEBUG=False
+    env_file:
+      - config/.env.test
+    networks:
+      - test-network
+    profiles:
+      - test
+
+  # Aplicación para preproducción
+  app-staging:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=False
+    env_file:
+      - config/.env.staging
+    networks:
+      - staging-network
+    profiles:
+      - staging
+
+  # Aplicación para producción
+  app-production:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5003:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=False
+    env_file:
+      - config/.env.production
+    networks:
+      - production-network
+    profiles:
+      - production
+
+networks:
+  test-network:
+    driver: bridge
+  staging-network:
+    driver: bridge
+  production-network:
+    driver: bridge

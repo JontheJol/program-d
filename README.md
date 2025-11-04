@@ -166,3 +166,213 @@ pyinstaller --onefile --windowed --icon=icono.ico --add-data "templates;template
 - **No requiere**: Python ni dependencias instaladas en el sistema destino
 - **Tamaño**: Aproximadamente 8-15 MB (incluye todo lo necesario)
 
+---
+
+## 🚀 CI/CD y Deployment
+
+Este proyecto incluye un pipeline completo de CI/CD (Integración y Entrega Continua) usando **GitHub Actions** y **Docker**.
+
+### 🏗️ Arquitectura de CI/CD
+
+El proyecto soporta múltiples ambientes:
+- **Desarrollo** (`development`) - Puerto 5000
+- **Pruebas** (`test`) - Puerto 5001  
+- **Preproducción** (`staging`) - Puerto 5002
+- **Producción** (`production`) - Puerto 5003
+
+### 📋 Pipeline Automatizado
+
+El pipeline se ejecuta automáticamente en cada push y pull request:
+
+1. **🧪 Testing & Quality**: 
+   - Tests unitarios con pytest
+   - Análisis de código con flake8
+   - Verificación de formato con black
+   - Reporte de cobertura
+
+2. **📦 Build**: 
+   - Construcción de imagen Docker
+   - Publicación en GitHub Container Registry
+   - Soporte para múltiples arquitecturas (amd64, arm64)
+
+3. **🚀 Deploy Automático**:
+   - **Test**: Deploy automático desde rama `develop`
+   - **Staging**: Deploy automático desde rama `main`
+   - **Production**: Deploy manual con aprobación requerida
+
+### 🐳 Docker y Containerización
+
+#### Desarrollo Local con Docker
+
+```bash
+# Desarrollo con hot-reload
+docker-compose up
+
+# Ejecutar en modo test
+docker-compose --profile test up app-test
+
+# Ejecutar en modo staging
+docker-compose --profile staging up app-staging
+
+# Ejecutar en modo production
+docker-compose --profile production up app-production
+```
+
+#### Construcción Manual
+
+```bash
+# Construir imagen
+docker build -t metodos-numericos .
+
+# Ejecutar contenedor
+docker run -p 5000:5000 metodos-numericos
+```
+
+### 🔧 Scripts de Deployment
+
+El proyecto incluye scripts automatizados para cada ambiente:
+
+```bash
+# Deploy a ambiente de pruebas
+./scripts/deploy-test.sh
+
+# Deploy a preproducción  
+./scripts/deploy-staging.sh
+
+# Deploy a producción (requiere confirmación)
+./scripts/deploy-production.sh
+```
+
+### 🧪 Testing
+
+#### Ejecutar Tests Localmente
+
+```bash
+# Instalar dependencias de desarrollo
+pip install pytest pytest-cov pytest-flask black flake8
+
+# Ejecutar todos los tests
+pytest tests/ -v
+
+# Tests con reporte de cobertura
+pytest tests/ --cov=app --cov-report=html
+
+# Verificar formato de código
+black --check .
+
+# Análisis de código
+flake8 .
+```
+
+#### Estructura de Tests
+
+```
+tests/
+├── __init__.py
+├── conftest.py                 # Configuración de fixtures
+├── test_metodos_numericos.py   # Tests de algoritmos
+└── test_flask_app.py          # Tests de endpoints Flask
+```
+
+### 📊 Ambientes y Configuración
+
+#### Variables de Ambiente
+
+Cada ambiente tiene su archivo de configuración:
+
+- `config/.env.development` - Desarrollo
+- `config/.env.test` - Pruebas automatizadas  
+- `config/.env.staging` - Preproducción
+- `config/.env.production` - Producción
+
+#### Configuración por Ambiente
+
+```bash
+# Variables importantes
+FLASK_ENV=production|development|testing
+FLASK_DEBUG=True|False
+FLASK_HOST=0.0.0.0
+FLASK_PORT=5000
+SECRET_KEY=tu-clave-secreta
+```
+
+### 🔒 Seguridad y Buenas Prácticas
+
+- ✅ **Contenedor sin privilegios de root**
+- ✅ **Variables de ambiente para configuración sensible**
+- ✅ **Imágenes Docker multi-arquitectura**
+- ✅ **Health checks automáticos**
+- ✅ **Blue-Green deployment en producción**
+- ✅ **Rollback automático en caso de falla**
+- ✅ **Limpieza automática de imágenes antiguas**
+
+### 🔄 Workflow de Desarrollo
+
+1. **Desarrollo Local**:
+   ```bash
+   git checkout develop
+   # Hacer cambios
+   docker-compose up  # Para probar localmente
+   ```
+
+2. **Testing**:
+   ```bash
+   pytest tests/  # Ejecutar tests
+   git commit -m "feat: nueva funcionalidad"
+   git push origin develop  # Deploy automático a test
+   ```
+
+3. **Preproducción**:
+   ```bash
+   git checkout main
+   git merge develop
+   git push origin main  # Deploy automático a staging
+   ```
+
+4. **Producción**:
+   - Ir a GitHub Actions
+   - Aprobar deployment manual a producción
+   - O ejecutar: `./scripts/deploy-production.sh`
+
+### 📈 Monitoreo y Logs
+
+```bash
+# Ver logs en tiempo real
+docker logs -f metodos-numericos-production
+
+# Monitorear recursos
+docker stats metodos-numericos-production
+
+# Health check manual
+curl http://localhost:5003/
+```
+
+### 🚨 Rollback de Emergencia
+
+En caso de problemas en producción:
+
+```bash
+# Ver contenedores disponibles
+docker ps -a
+
+# Rollback a versión anterior
+docker stop metodos-numericos-production
+docker start metodos-numericos-production-backup-YYYYMMDD-HHMMSS
+```
+
+### 📚 Comandos Útiles
+
+```bash
+# Ver todas las imágenes
+docker images metodos-numericos
+
+# Limpiar sistema Docker
+docker system prune -a
+
+# Ver logs de build en GitHub Actions
+# Ir a: https://github.com/tu-usuario/program-d/actions
+
+# Descargar imagen desde registry
+docker pull ghcr.io/tu-usuario/program-d/metodos-numericos:latest
+```
+
